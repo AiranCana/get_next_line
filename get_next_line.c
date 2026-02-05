@@ -6,33 +6,75 @@
 /*   By: acanadil <acanadil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/03 09:44:31 by acanadil          #+#    #+#             */
-/*   Updated: 2026/02/04 16:15:50 by acanadil         ###   ########.fr       */
+/*   Updated: 2026/02/05 17:10:29 by acanadil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+#include <stdio.h>
 
-char	*reader(char *buf)
+char	*ft_free(char *buf, char *rea)
 {
-	int	rbuf;
+	char	*temp;
 
+	temp = ft_strjoin(buf, rea);
+	free(buf);
+	return (temp);
+}
+
+char	*get_line(char *buf)
+{
+	char	*line;
+	char	*aux;
+
+	if (!buf || !buf[0])
+		return (NULL);
+	aux = ft_strchr(buf, '\n');
+	if (aux)
+		line = ft_substr(buf, 1 + aux - buf);
+	else
+		line = ft_substr(buf, ft_strlen(buf));
+	return (line);
+}
+
+char	*reader(int fd, char *buf)
+{
+	int		rbuf;
+	char	*rfile;
+
+	if (!buf)
+		buf = malloc(1);
 	rbuf = 1;
+	rfile = malloc(sizeof (char) * (BUFFER_SIZE + 1));
 	while (rbuf > 0)
 	{
-		
+		rbuf = read(fd, rfile, BUFFER_SIZE);
+		if (rbuf == -1)
+		{
+			free(rfile);
+			return (NULL);
+		}
+		rfile[rbuf] = 0;
+		buf = ft_free(buf, rfile);
+		if (ft_strchr(buf, '\n'))
+			return (buf);
 	}
+	free(rfile);
+	printf("%s", buf);
 	return (buf);
 }
 
 char	*get_next_line(int fd)
 {
+	static char	*buf;
 	char		*line;
-	static char	*buffer;
 
-	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, 0, 0))
+	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, 0, 0) == -1)
 		return (NULL);
-	buffer = reader(buffer);
-	if (!buffer)
+	buf = reader(fd, buf);
+	if (!buf)
 		return (NULL);
+	line = get_line(buf);
+	//buf = next_line(buf);
 	return (line);
 }
