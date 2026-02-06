@@ -6,7 +6,7 @@
 /*   By: acanadil <acanadil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/03 13:11:18 by acanadil          #+#    #+#             */
-/*   Updated: 2026/02/06 11:46:35 by acanadil         ###   ########.fr       */
+/*   Updated: 2026/02/06 14:29:11 by acanadil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 # include <stddef.h>
 
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 2
+#  define BUFFER_SIZE 26
 # endif
 
 char	*ft_strjoin(char const *str1, char const *str2);

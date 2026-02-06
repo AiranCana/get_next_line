@@ -6,7 +6,7 @@
 /*   By: acanadil <acanadil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/03 16:07:44 by acanadil          #+#    #+#             */
-/*   Updated: 2026/02/06 12:33:17 by acanadil         ###   ########.fr       */
+/*   Updated: 2026/02/06 14:13:22 by acanadil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,10 +71,6 @@ char	*ft_strjoin(char const *str1, char const *str2)
 	while (++count > -1 && str2[count])
 		str[count + aux] = str2[count];
 	str[lon] = '\0';
-	if (str1)
-		free(str1);
-	if (str2)
-		free(str2);
 	return (str);
 }
 

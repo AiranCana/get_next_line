@@ -6,7 +6,7 @@
 /*   By: acanadil <acanadil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/03 09:44:31 by acanadil          #+#    #+#             */
-/*   Updated: 2026/02/06 12:31:17 by acanadil         ###   ########.fr       */
+/*   Updated: 2026/02/06 14:30:34 by acanadil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ char	*ft_free(char *buf, char *rea)
 	char	*temp;
 
 	temp = ft_strjoin(buf, rea);
+	free(rea);
 	return (temp);
 }
 
@@ -45,7 +46,7 @@ char	*next_line(char *buf)
 	{
 		if (*c == '\n')
 			c++;
-		c = ft_strjoin(c, "");
+		c = ft_substr(c, ft_strlen(c));
 	}
 	free(buf);
 	return (c);
@@ -86,10 +87,18 @@ char	*get_next_line(int fd)
 	char		*line;
 
 	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, 0, 0) == -1)
+	{
+		if (buf && !buf[0])
+			free(buf);
 		return (NULL);
+	}
 	buf = reader(fd, buf);
-	if (!buf)
+	if (!buf || !buf[0])
+	{
+		if (buf)
+			free(buf);
 		return (NULL);
+	}
 	line = get_line(buf);
 	buf = next_line(buf);
 	return (line);
