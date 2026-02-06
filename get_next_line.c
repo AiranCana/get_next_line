@@ -6,7 +6,7 @@
 /*   By: acanadil <acanadil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/03 09:44:31 by acanadil          #+#    #+#             */
-/*   Updated: 2026/02/05 17:10:29 by acanadil         ###   ########.fr       */
+/*   Updated: 2026/02/06 12:31:17 by acanadil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ char	*ft_free(char *buf, char *rea)
 	char	*temp;
 
 	temp = ft_strjoin(buf, rea);
-	free(buf);
 	return (temp);
 }
 
@@ -37,21 +36,38 @@ char	*get_line(char *buf)
 	return (line);
 }
 
+char	*next_line(char *buf)
+{
+	char	*c;
+
+	c = ft_strchr(buf, '\n');
+	if (c)
+	{
+		if (*c == '\n')
+			c++;
+		c = ft_strjoin(c, "");
+	}
+	free(buf);
+	return (c);
+}
+
 char	*reader(int fd, char *buf)
 {
 	int		rbuf;
 	char	*rfile;
 
 	if (!buf)
-		buf = malloc(1);
+		buf = ft_calloc(1, 1);
 	rbuf = 1;
-	rfile = malloc(sizeof (char) * (BUFFER_SIZE + 1));
+	rfile = ft_calloc(sizeof (char), (BUFFER_SIZE + 1));
 	while (rbuf > 0)
 	{
 		rbuf = read(fd, rfile, BUFFER_SIZE);
-		if (rbuf == -1)
+		if (rbuf < 1)
 		{
 			free(rfile);
+			if (buf && rbuf == 0)
+				return (buf);
 			return (NULL);
 		}
 		rfile[rbuf] = 0;
@@ -60,7 +76,7 @@ char	*reader(int fd, char *buf)
 			return (buf);
 	}
 	free(rfile);
-	printf("%s", buf);
+	rfile = NULL;
 	return (buf);
 }
 
@@ -75,6 +91,6 @@ char	*get_next_line(int fd)
 	if (!buf)
 		return (NULL);
 	line = get_line(buf);
-	//buf = next_line(buf);
+	buf = next_line(buf);
 	return (line);
 }
