@@ -6,7 +6,7 @@
 /*   By: acanadil <acanadil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/03 09:44:31 by acanadil          #+#    #+#             */
-/*   Updated: 2026/02/06 14:30:34 by acanadil         ###   ########.fr       */
+/*   Updated: 2026/02/06 14:58:49 by acanadil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ char	*ft_free(char *buf, char *rea)
 
 	temp = ft_strjoin(buf, rea);
 	free(rea);
+	free(buf);
 	return (temp);
 }
 
