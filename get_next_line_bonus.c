@@ -6,13 +6,13 @@
 /*   By: acanadil <acanadil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/09 10:38:56 by acanadil          #+#    #+#             */
-/*   Updated: 2026/02/09 10:38:57 by acanadil         ###   ########.fr       */
+/*   Updated: 2026/02/10 10:18:57 by acanadil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-static char	*ft_free(char *buf, char *rea, int rbuf)
+static char	*join(char *buf, char *rea, int rbuf)
 {
 	char	*temp;
 
@@ -25,7 +25,7 @@ static char	*ft_free(char *buf, char *rea, int rbuf)
 	return (temp);
 }
 
-static char	*get_line(char *buf)
+static char	*gline(char *buf)
 {
 	char	*line;
 	char	*aux;
@@ -40,7 +40,7 @@ static char	*get_line(char *buf)
 	return (line);
 }
 
-static char	*next_line(char *buf)
+static char	*nline(char *buf)
 {
 	char	*c;
 
@@ -77,7 +77,7 @@ static char	*reader(int fd, char *buf)
 				return (buf);
 			return (NULL);
 		}
-		buf = ft_free(buf, rfile, rbuf);
+		buf = join(buf, rfile, rbuf);
 		if (ft_strchr(buf, '\n'))
 		{
 			free (rfile);
@@ -99,8 +99,8 @@ char	*get_next_line(int fd)
 	buf = reader(fd, buf);
 	if (!buf)
 		return (NULL);
-	line = get_line(buf);
-	buf = next_line(buf);
+	line = gline(buf);
+	buf = nline(buf);
 	return (line);
 }
 ///=∂/\/\[](_)§ /\/\@|V †|-|@¯|¯ /-/!570®1<|-\£1_`/ ¢@/\/\ε vv!7}{ ???
