@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: acanadil <acanadil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/03 09:44:31 by acanadil          #+#    #+#             */
-/*   Updated: 2026/02/12 13:56:16 by acanadil         ###   ########.fr       */
+/*   Updated: 2026/02/12 15:51:55 by acanadil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 static char	*join(char *buf, char *rea, int rbuf)
 {
@@ -20,7 +20,10 @@ static char	*join(char *buf, char *rea, int rbuf)
 	if (!buf)
 		temp = ft_substr(rea, ft_strlen(rea));
 	else
-		temp = going_free(buf, ft_strjoin(buf, rea));
+	{
+		temp = ft_strjoin(buf, rea);
+		free(buf);
+	}
 	if (!temp)
 		free (rea);
 	return (temp);
@@ -81,8 +84,7 @@ static char	*reader(int fd, char *buf)
 			going_free(rfile, NULL);
 			if (rbuf == 0)
 				return (buf);
-			free (buf);
-			return (NULL);
+			return (going_free(buf, NULL));
 		}
 		buf = join(buf, rfile, rbuf);
 		if (!buf)
@@ -97,15 +99,15 @@ static char	*reader(int fd, char *buf)
 
 char	*get_next_line(int fd)
 {
-	static char	*buf;
+	static char	*buf[1024];
 	char		*line;
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-	buf = reader(fd, buf);
-	if (!buf)
+	buf[fd] = reader(fd, buf[fd]);
+	if (!buf[fd])
 		return (NULL);
-	line = gline(buf);
-	buf = nline(buf);
+	line = gline(buf[fd]);
+	buf[fd] = nline(buf[fd]);
 	return (line);
 }
