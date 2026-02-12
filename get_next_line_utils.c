@@ -6,7 +6,7 @@
 /*   By: acanadil <acanadil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/03 16:07:44 by acanadil          #+#    #+#             */
-/*   Updated: 2026/02/09 09:38:45 by acanadil         ###   ########.fr       */
+/*   Updated: 2026/02/12 12:04:40 by acanadil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ char	*ft_strchr(const char *str, int leter)
 {
 	char	*s;
 
+	if (!str)
+		return (NULL);
 	s = (char *) str;
 	while (*s && *s != leter)
 		s++;
@@ -28,6 +30,8 @@ size_t	ft_strlen(const char *s)
 {
 	size_t	i;
 
+	if (!s)
+		return (0);
 	i = 0;
 	while (s[i])
 		i++;
@@ -38,7 +42,13 @@ char	*ft_substr(char *s, size_t len)
 {
 	char	*line;
 	size_t	post;
+	size_t	slen;
 
+	if (!s)
+		return (NULL);
+	slen = ft_strlen(s);
+	if (len > slen)
+		len = slen;
 	line = malloc(len + 1);
 	if (!line)
 		return (NULL);
@@ -68,7 +78,7 @@ char	*ft_strjoin(char const *str1, char const *str2)
 		return (ft_substr((char *)str2, ft_strlen(str2)));
 	lon = ft_strlen(str1) + ft_strlen(str2);
 	str = malloc(sizeof (char) * (lon + 1));
-	if (!str || (!str1 && !str2 && !str2[0]))
+	if (!str || (!str1 && !str2))
 		return (NULL);
 	while (++count > -1 && str1[count])
 		str[count] = str1[count];

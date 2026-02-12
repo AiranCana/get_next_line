@@ -6,7 +6,7 @@
 /*   By: acanadil <acanadil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/03 09:44:31 by acanadil          #+#    #+#             */
-/*   Updated: 2026/02/10 10:18:55 by acanadil         ###   ########.fr       */
+/*   Updated: 2026/02/12 12:29:46 by acanadil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,14 @@ static char	*join(char *buf, char *rea, int rbuf)
 
 	rea[rbuf] = 0;
 	if (!buf)
-		return (ft_substr(rea, ft_strlen(rea)));
-	temp = ft_strjoin(buf, rea);
-	if (buf)
+		temp = ft_substr(rea, ft_strlen(rea));
+	else
+	{
+		temp = ft_strjoin(buf, rea);
 		free(buf);
+	}
+	if (!temp)
+		free (rea);
 	return (temp);
 }
 
@@ -37,6 +41,11 @@ static char	*gline(char *buf)
 		line = ft_substr(buf, 1 + aux - buf);
 	else
 		line = ft_substr(buf, ft_strlen(buf));
+	if (!line)
+	{
+		free (buf);
+		buf = NULL;
+	}
 	return (line);
 }
 
@@ -44,7 +53,7 @@ static char	*nline(char *buf)
 {
 	char	*c;
 
-	if (!buf[0] || (buf[0] == 'n' && !buf[1]))
+	if (!buf[0] || (buf[0] == '\n' && !buf[1]))
 	{
 		free(buf);
 		return (NULL);
@@ -70,15 +79,18 @@ static char	*reader(int fd, char *buf)
 	while (rbuf > 0)
 	{
 		rbuf = read(fd, rfile, BUFFER_SIZE);
-		if (rbuf < 1)
+		if (rbuf <= 0)
 		{
 			free(rfile);
-			if (buf && rbuf == 0)
+			if (rbuf == 0)
 				return (buf);
+			free (buf);
 			return (NULL);
 		}
 		buf = join(buf, rfile, rbuf);
-		if (ft_strchr(buf, '\n'))
+		if (!buf)
+			return (NULL);
+		else if (ft_strchr(buf, '\n'))
 		{
 			free (rfile);
 			return (buf);
@@ -94,7 +106,7 @@ char	*get_next_line(int fd)
 	static char	*buf;
 	char		*line;
 
-	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, 0, 0) == -1)
+	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
 	buf = reader(fd, buf);
 	if (!buf)
@@ -103,3 +115,21 @@ char	*get_next_line(int fd)
 	buf = nline(buf);
 	return (line);
 }
+
+/*
+
+char	*get_next_line(int fd)
+{
+	static char	*buf;
+	char		*line;
+
+	if (fd < 0 || BUFFER_SIZE <= 0)
+		return (NULL);
+	buf = reader(fd, buf);
+	if (!buf)
+		return (NULL);
+	line = gline(buf);
+	buf = nline(buf);
+	return (line);
+}
+*/
