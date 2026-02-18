@@ -6,11 +6,11 @@
 /*   By: acanadil <acanadil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/03 16:07:44 by acanadil          #+#    #+#             */
-/*   Updated: 2026/02/12 13:52:37 by acanadil         ###   ########.fr       */
+/*   Updated: 2026/02/18 12:04:34 by acanadil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 char	*ft_strchr(const char *str, int leter)
 {
